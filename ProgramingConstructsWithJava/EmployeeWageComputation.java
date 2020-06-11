@@ -90,7 +90,7 @@ public class EmployeeWageComputation {
 
     public static void main(String[] args) throws IOException {
 
-        System.out.println("Please entr the number of employees for calculating wage of the month");
+        System.out.println("Please enter the number of employees for wage calculations for the month");
         int NumberOfEmployees=scanner.nextInt();
 
         File f=new File("EmployeeList.txt");
