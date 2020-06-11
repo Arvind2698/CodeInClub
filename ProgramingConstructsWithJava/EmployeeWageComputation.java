@@ -1,52 +1,130 @@
-public class EmployeeWageComputation {
+import java.io.*;
+import java.util.Scanner;
 
-    public static int WagePerHour=20;
-    public static int HoursPerDay=8;
-    public static int PartTimeHours=4;
-    public static void main(String[] args) {
-        System.out.println("Welcome to the Employee Wage Calculation Program");
-        int WagePerDay=0;
-        int TotalWageForMonth=0;
-        int TotalWorkingHours=0;
-        int FullWorkingDays=0;
-        int PartTimeWorkingDays=0;
-        int AbsentDays=0;
+class Employee{
+    public int WagePerHour;
+    public int HoursPerDay;
+    public int PartTimeHours;
 
-        for(int day=1;day<=20;day++){
-            while(TotalWorkingHours<100){
-            System.out.println("Day: "+day);
-            int EmployeeAttendance=(int)(Math.random()*3);
-            switch(EmployeeAttendance){
-                case 0:WagePerDay=0;
-                TotalWorkingHours+=0;
-                AbsentDays++;
-                System.out.println("Employee is absent. Salary for the day: "+WagePerDay);
-                break;
-                case 1:WagePerDay=WagePerHour*HoursPerDay;
-                TotalWorkingHours+=HoursPerDay;
-                FullWorkingDays++;
-                System.out.println("Employee is present. Salary for the day: "+WagePerDay);
-                break;
-                case 2:WagePerDay=WagePerHour*PartTimeHours;
-                TotalWorkingHours+=PartTimeHours;
-                PartTimeWorkingDays++;
-                System.out.println("Employee is present and working part-time. Salary for the day: "+WagePerDay);
-                break;
-                default:
-                System.out.println("Error Occurred");
-            }
-            TotalWageForMonth+=WagePerDay;
-            break;
-        }
-        }
-        System.out.println("#######################################################################");
-        System.out.println("Total Wage Earned at the end of 20 days/100 hours: "+TotalWageForMonth);
-        System.out.println("Total Full Working Days: "+FullWorkingDays);
-        System.out.println("Total Part Time Working Days: "+PartTimeWorkingDays);
-        System.out.println("Total Absent Days: "+AbsentDays);
-        System.out.println("Total Hours Worked: "+TotalWorkingHours);
-        System.out.println("#######################################################################");
+    public int WagePerDay;
+    public int TotalWageForMonth;
+    public int TotalWorkingHours;
+    public int FullWorkingDays;
+    public int PartTimeWorkingDays;
+    public int AbsentDays;
 
+    public Employee(){
+        WagePerHour=20;
+        HoursPerDay=8;
+        PartTimeHours=4;
+
+        WagePerDay=0;
+        TotalWageForMonth=0;
+        TotalWorkingHours=0;
+        FullWorkingDays=0;
+        PartTimeWorkingDays=0;
+        AbsentDays=0;
     }
 
+    public int CalculateAttendance(){
+        return (int)(Math.random()*3);
+    }
+
+    public void CalculateWagePerDay(){
+        int EmployeeAttendance=CalculateAttendance();
+        switch(EmployeeAttendance){
+            case 0:this.WagePerDay=0;
+                this.TotalWorkingHours+=0;
+                this.AbsentDays++;
+                //System.out.println("Employee is absent. Salary for the day: "+this.WagePerDay);
+                break;
+            case 1:this.WagePerDay=this.WagePerHour*this.HoursPerDay;
+                this.TotalWorkingHours+=this.HoursPerDay;
+                this.FullWorkingDays++;
+                //System.out.println("Employee is present. Salary for the day: "+this.WagePerDay);
+                break;
+            case 2:this.WagePerDay=this.WagePerHour*this.PartTimeHours;
+                this.TotalWorkingHours+=this.PartTimeHours;
+                this.PartTimeWorkingDays++;
+                //System.out.println("Employee is present and working part-time. Salary for the day: "+this.WagePerDay);
+                break;
+            default:
+                System.out.println("Error Occurred");
+        }
+    }
+
+    public void CalculateWagePerMonth(){
+        for(int day=1;day<=20;day++){
+            while(this.TotalWorkingHours<100){
+                //System.out.println("Day: "+day);
+                CalculateWagePerDay();
+                this.TotalWageForMonth+=this.WagePerDay;
+                break;
+            }
+        }
+    }
+
+    public int getTotalWageForMonth() {
+        return TotalWageForMonth;
+    }
+
+    public int getTotalWorkingHours() {
+        return TotalWorkingHours;
+    }
+
+    public int getFullWorkingDays() {
+        return FullWorkingDays;
+    }
+
+    public int getPartTimeWorkingDays() {
+        return PartTimeWorkingDays;
+    }
+
+    public int getAbsentDays() {
+        return AbsentDays;
+    }
+}
+
+public class EmployeeWageComputation {
+    public static Scanner scanner=new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+
+        System.out.println("Please entr the number of employees for calculating wage of the month");
+        int NumberOfEmployees=scanner.nextInt();
+
+        File f=new File("EmployeeList.txt");
+        FileWriter fw=new FileWriter(f,true);
+        PrintWriter pw1=new PrintWriter(fw);
+
+        String EmployeeName;
+        for(int i=0;i<NumberOfEmployees;i++){
+            System.out.println("Enter the name of the Employee");
+            EmployeeName=scanner.next();
+            pw1.println(EmployeeName);
+        }
+
+        pw1.flush();
+        pw1.close();
+
+        BufferedReader br =new BufferedReader(new FileReader(f));
+        PrintWriter pw2=new PrintWriter("EmployeeWageDetailsList.txt");
+
+        String input=br.readLine();
+        while(input != null){
+            pw2.println(input);
+            Employee newEmployee=new Employee();
+            newEmployee.CalculateWagePerMonth();
+            pw2.println("Total Wage Earned at the end of 20 days/100 hours: "+newEmployee.getTotalWageForMonth() );
+            pw2.println("Total Full Working Days: "+newEmployee.getFullWorkingDays());
+            pw2.println("Total Part Time Working Days: "+newEmployee.getPartTimeWorkingDays());
+            pw2.println("Total Absent Days: "+newEmployee.getAbsentDays());
+            pw2.println("Total Hours Worked: "+newEmployee.getTotalWorkingHours());
+            pw2.println("------------------------------------------------------");
+            input=br.readLine();
+        }
+        pw2.flush();
+        br.close();
+        pw2.close();
+    }
 }
