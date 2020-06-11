@@ -7,15 +7,18 @@ public class EmployeeWageComputation {
         System.out.println("Welcome to the Employee Wage Calculation Program");
         int WagePerDay;
         int EmployeeAttendance=(int)(Math.random()*3);
-        if(EmployeeAttendance == 0){
-            WagePerDay=0;
+	switch(EmployeeAttendance){
+            case 0:WagePerDay=0;
             System.out.println("Employee is absent. Salary for the day: "+WagePerDay);
-        }else if(EmployeeAttendance ==1 ){
-            WagePerDay=WagePerHour*HoursPerDay;
+            break;
+            case 1:WagePerDay=WagePerHour*HoursPerDay;
             System.out.println("Employee is present. Salary for the day: "+WagePerDay);
-        }else if(EmployeeAttendance ==2 ){
-            WagePerDay=WagePerHour*PartTimeHours;
+            break;
+            case 2:WagePerDay=WagePerHour*PartTimeHours;
             System.out.println("Employee is present and working part-time. Salary for the day: "+WagePerDay);
+            break;
+            default:
+                System.out.println("Error Occurred");
         }
     }
 
