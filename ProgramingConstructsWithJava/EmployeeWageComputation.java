@@ -2,16 +2,16 @@ import java.io.*;
 import java.util.Scanner;
 
 class Employee{
-    public int WagePerHour;
-    public int HoursPerDay;
-    public int PartTimeHours;
+    private int WagePerHour;
+    private int HoursPerDay;
+    private int PartTimeHours;
 
-    public int WagePerDay;
-    public int TotalWageForMonth;
-    public int TotalWorkingHours;
-    public int FullWorkingDays;
-    public int PartTimeWorkingDays;
-    public int AbsentDays;
+    private int WagePerDay;
+    private int TotalWageForMonth;
+    private int TotalWorkingHours;
+    private int FullWorkingDays;
+    private int PartTimeWorkingDays;
+    private int AbsentDays;
 
     public Employee(){
         WagePerHour=20;
@@ -36,17 +36,14 @@ class Employee{
             case 0:this.WagePerDay=0;
                 this.TotalWorkingHours+=0;
                 this.AbsentDays++;
-                //System.out.println("Employee is absent. Salary for the day: "+this.WagePerDay);
                 break;
             case 1:this.WagePerDay=this.WagePerHour*this.HoursPerDay;
                 this.TotalWorkingHours+=this.HoursPerDay;
                 this.FullWorkingDays++;
-                //System.out.println("Employee is present. Salary for the day: "+this.WagePerDay);
                 break;
             case 2:this.WagePerDay=this.WagePerHour*this.PartTimeHours;
                 this.TotalWorkingHours+=this.PartTimeHours;
                 this.PartTimeWorkingDays++;
-                //System.out.println("Employee is present and working part-time. Salary for the day: "+this.WagePerDay);
                 break;
             default:
                 System.out.println("Error Occurred");
@@ -56,7 +53,6 @@ class Employee{
     public void CalculateWagePerMonth(){
         for(int day=1;day<=20;day++){
             while(this.TotalWorkingHours<100){
-                //System.out.println("Day: "+day);
                 CalculateWagePerDay();
                 this.TotalWageForMonth+=this.WagePerDay;
                 break;
